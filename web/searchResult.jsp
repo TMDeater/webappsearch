@@ -142,10 +142,11 @@
                 </form>
                 <%--<% System.out.println("aaa"); %>--%>
                 <%
+                    out.println("Your query: "+request.getParameter("txtname")+"<br/>");
 
                     if(request.getParameter("txtname")!=null)
                     {
-                        out.println("The results are:<hr/>");
+
                         String string1 = request.getParameter("txtname");
 
                         String[] str1 = string1.split(" ");
@@ -153,6 +154,8 @@
                         Vector<String> vector = new Vector<String>(list);
 
                         Vector<Webpage> result = SearchTool.search(vector);
+                        out.println("Total pages found: "+result.size()+"<br/>");
+                        out.println("The results are:<hr/>");
                         if(result.size() > 0){
                             out.println("<table>");
 

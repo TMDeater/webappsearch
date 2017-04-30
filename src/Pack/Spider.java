@@ -15,9 +15,9 @@ import java.util.Set;
 import java.util.Vector;
 
 public class Spider {
-	private static final int MAX = 30;
+	private static final int MAX = 300;
 	private static int numOfPage = 0;
-	private static StemStop stopStem = new StemStop("stopwords.txt");
+	private static StemStop stopStem = new StemStop("web/stopwords.txt");
 	private static Vector<String> TodoList = new Vector<String>();
 	private static Vector<String> DoneList = new Vector<String>();
 	private static IndexTool PageIndexer;
@@ -241,9 +241,10 @@ public class Spider {
 			}
 		}
 		for (int i=0; i<allWords.size(); i++){
-			int index = FullWordIndexer.addEntry(allWords.get(i), Integer.toString(FullWordIndexer.getLastIdx()));
+			String word = allWords.get(i).toLowerCase();
+			int index = FullWordIndexer.addEntry(word, Integer.toString(FullWordIndexer.getLastIdx()));
 			fullAddFreqOrNew(allWordMap, index, i);
-			fullWordForward.addEntry2(pgidx+"", allWords.get(i));
+			fullWordForward.addEntry2(pgidx+"", word);
 		}
 
 		//find max freq in a doc
@@ -263,16 +264,20 @@ public class Spider {
 	    
 	    
 		//title
-		StemStop stopStem = new StemStop("stopwords.txt");
+		StemStop stopStem = new StemStop("web/stopwords.txt");
 		String title = "";
 		try{
 			Vector<String> titleWords = crawler.getTitle();
 
 			if (titleWords.firstElement()!=""){
-				for(int i = 0; i < titleWords.size(); i++){
-					title += titleWords.elementAt(i);
-                    stopStemCheckAndPutInTitleIndex(stopStem, titleWords, i, pgidx);
-                }
+				title=titleWords.elementAt(0);
+				stopStemCheckAndPutInTitleIndex(stopStem, titleWords, 0, pgidx);
+				if (titleWords.size()>=2) {
+					for (int i = 1; i < titleWords.size(); i++) {
+						title = title + " " + titleWords.elementAt(i);
+						stopStemCheckAndPutInTitleIndex(stopStem, titleWords, i, pgidx);
+					}
+				}
 			}
 		}catch(ParserException ex){
 			title = " ";

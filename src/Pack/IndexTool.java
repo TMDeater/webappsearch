@@ -6,9 +6,11 @@
 package Pack;
 
 import jdbm.RecordManager;
+import jdbm.RecordManagerFactory;
 import jdbm.htree.HTree;
 import jdbm.helper.FastIterator;
 import java.io.IOException;
+import java.util.Vector;
 
 public class IndexTool{
   private RecordManager recman;
@@ -62,7 +64,8 @@ public class IndexTool{
 		// Add a "docX Y" entry for the key "word" into hashtable
 		// ADD YOUR CODES HERE
 		// Test "word" in index file.true stop insertion and return directly.
-		if (hashtable1.get(word)!=null)
+	//for wordidxr hashtable1:   word:ID
+	  if (hashtable1.get(word)!=null)
 		{
 			return getIdxNumber(word);
 		}
@@ -147,6 +150,30 @@ public class IndexTool{
   		while ((key = (String) i.next()) != null) {
   			System.out.println(key + ": " + hashtable1.get(key));
   		}
-
   	}
+
+  	public Vector<String> allWords() throws IOException {
+    	Vector<String> words = new Vector<>();
+    	FastIterator i = hashtable1.keys();
+    	String key;
+		while ((key = (String) i.next()) != null) {
+			if (key.matches(".*\\d+.*")){
+				continue;
+			} else {
+				words.add(key);
+			}
+		}
+		return words;
+	}
+
+  	public static void main(String args[]) throws IOException {
+    	RecordManager recman = RecordManagerFactory.createRecordManager("web/database");
+    	IndexTool wordIndexer = new IndexTool(recman, "word");
+    	wordIndexer.printAll();
+    	String abc = "fff";
+    	if (abc.matches(".*\\d+.*")){
+    		System.out.println("have number");
+		}
+
+	}
 }

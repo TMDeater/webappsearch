@@ -65,6 +65,14 @@ public class SearchTool {
         termWeight = new InvertedIndex(recManager, "termW");
     }
 
+    public static Vector<String> giveAllWords() throws IOException {
+        stopStem = new StemStop("D:\\webappsearch\\web\\stopwords.txt");
+        recManager = RecordManagerFactory.createRecordManager("D:\\webappsearch\\web\\database");
+        loadFromDatabase();
+        Vector<String> words = WordIdxr.allWords();
+        return words;
+    }
+
     public static Vector<Webpage> search(Vector<String> keywords) throws IOException{
         stopStem = new StemStop("D:\\webappsearch\\web\\stopwords.txt");
         recManager = RecordManagerFactory.createRecordManager("D:\\webappsearch\\web\\database");
@@ -119,12 +127,14 @@ public class SearchTool {
                             splitQuoteString[j] = wordInQuotedString.substring(0, wordInQuotedString.length() - 1);
                         }
                     }
+                    //change to lower case
+                    wordInQuotedString = wordInQuotedString.toLowerCase();
                     //load the word index first
                     if (!(FullWordIdxr.getIdx(wordInQuotedString).equals("-1"))) {
                         quoteKeywordValue.add(FullWordIdxr.getIdx(wordInQuotedString));
                     } else {
                         //database do not have the query word so the database must not have result
-                        return new Vector<Webpage>();
+//                        return new Vector<Webpage>();
                     }
                 }
 

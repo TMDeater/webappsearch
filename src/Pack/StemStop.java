@@ -59,7 +59,7 @@ public class StemStop{
 
 //run in main
   public static void main(String[] arg) throws MalformedURLException {
-    StemStop stopStem = new StemStop(new URL("http://localhost:8080/stopwords.txt"));
+    StemStop stopStem = new StemStop(new URL("web/stopwords.txt"));
 		String input="";
 		try{
 			do
