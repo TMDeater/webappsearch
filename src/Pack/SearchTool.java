@@ -65,11 +65,11 @@ public class SearchTool {
         termWeight = new InvertedIndex(recManager, "termW");
     }
 
-    public static Vector<String> giveAllWords() throws IOException {
+    public static List<String> giveAllWords() throws IOException {
         stopStem = new StemStop("D:\\webappsearch\\web\\stopwords.txt");
         recManager = RecordManagerFactory.createRecordManager("D:\\webappsearch\\web\\database");
         loadFromDatabase();
-        Vector<String> words = WordIdxr.allWords();
+        List<String> words = WordIdxr.allWords();
         return words;
     }
 

@@ -2,6 +2,7 @@
 <%@ page import="Pack.Webpage" %>
 <%--<%@ page import="jdbm.RecordManagerFactory" %>--%>
 <%@ page import="jdbm.*" %>
+<%@ page import="java.util.List" %>
 <%--
   Created by IntelliJ IDEA.
   User: MSI
@@ -30,8 +31,21 @@
 
     #header h1 {
       margin: 0;
-      padding-top: 15px;
+      padding-top: 10px;
       color: white;
+    }
+
+    #sidebar{
+      padding-left: 0px;
+    }
+
+    .maxheight{
+      max-height:100vh;
+      overflow: auto;
+    }
+
+    #panelGp{
+      padding-right: 30px;
     }
 
     main {
@@ -88,17 +102,10 @@
 
   </style>
 
-  <script type="text/javascript">
-    /* =============================
-     This script generates sample text for the body content.
-     You can remove this script and any reference to it.
-     ============================= */
-    var bodyText=["The smaller your reality, the more convinced you are that you know everything.", "If the facts don't fit the theory, change the facts.", "The past has no power over the present moment.", "This, too, will pass.", "</p><p>You will not be punished for your anger, you will be punished by your anger.", "Peace comes from within. Do not seek it without.", "<h3>Heading</h3><p>The most important moment of your life is now. The most important person in your life is the one you are with now, and the most important activity in your life is the one you are involved with now."]
-    function generateText(sentenceCount){
-        for (var i=0; i<sentenceCount; i++)
-            document.write(bodyText[Math.floor(Math.random()*7)]+" ")
-    }
-  </script>
+  <%--bootstrap--%>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
   <script>
@@ -122,48 +129,68 @@
 </header>
 
 <div id="wrapper">
-
   <main>
-    <div id="content">
-      <div class="innertube">
-        <h1>Heading</h1>
-        <form method="post" action="searchResult.jsp">
-          <p>Please input your query here:</p>
-          <input type="text" size="100" name="txtname">
-          <input type="submit" value="Enter">
-        </form>
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm-2 pull left">
+          <div id="sidebar" class="sidebar-nav maxheight">
+            <h3>Stem Word</h3>
+            <p style="font-size: 12px;">Click on to see available word</p>
+            <div class="panel-group">
+              <div id="panelGp" class="panel panel-default">
+                <%
+                  List<String> availableWord = SearchTool.giveAllWords();
+                  out.write("<div class=\"panel-heading\">");
+                  out.write("<p class=\"panel-title\">");
+                  out.write("<a data-toggle=\"collapse\" href=\"#collapse1\">"+availableWord.get(1).charAt(0)+"</a>");
+                  out.write("</p>");
+                  out.write("</div>");
+                  out.write("<div id=\"collapse1\" class=\"panel-collapse collapse\"> ");
+                  out.write("<ul class=\"list-group\">");
+                  out.write("<li class=\"list-group-item\">"+availableWord.get(1)+"</li>");
+                  for (int i = 2; i<availableWord.size();i++){
+                    if (availableWord.get(i).charAt(0)!=availableWord.get(i-1).charAt(0)){
+                        out.write("</ul>");
+                        out.write("</div>");
+                        out.write("<div class=\"panel-heading\">");
+                        out.write("<p class=\"panel-title\">");
+                        out.write("<a data-toggle=\"collapse\" href=\"#collapse"+String.valueOf(i)+"\">"+availableWord.get(i).charAt(0)+"</a>");
+                        out.write("</p>");
+                        out.write("</div>");
+                        out.write("<div id=\"collapse" +String.valueOf(i)+ "\" class=\"panel-collapse collapse\"> ");
+                        out.write("<ul class=\"list-group\">");
+                        out.write("<li class=\"list-group-item\">" +availableWord.get(i)+ "</li>");
+
+                    } else {
+                    out.write("<li class=\"list-group-item\">" +availableWord.get(i)+ "</li>");
+                    }
+                  }
+                %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="content">
+            <div class="innertube">
+              <h1>Heading</h1>
+              <form method="post" action="searchResult.jsp">
+                <p>Please input your query here:</p>
+                <input type="text" size="100" name="txtname">
+                <input type="submit" value="Enter">
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
 
-  <nav id="nav">
-    <div class="innertube">
-      <h3>Stem Word List</h3>
-      <ul>
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-        <li><a href="#">Link 4</a></li>
-        <li><a href="#">Link 5</a></li>
-      </ul>
-      <h3>Left heading</h3>
-      <ul>
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-        <li><a href="#">Link 4</a></li>
-        <li><a href="#">Link 5</a></li>
-      </ul>
-      <h3>Left heading</h3>
-      <ul>
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-        <li><a href="#">Link 4</a></li>
-        <li><a href="#">Link 5</a></li>
-      </ul>
-    </div>
-  </nav>
+
 
 </div>
 

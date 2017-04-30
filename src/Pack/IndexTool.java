@@ -10,6 +10,8 @@ import jdbm.RecordManagerFactory;
 import jdbm.htree.HTree;
 import jdbm.helper.FastIterator;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class IndexTool{
@@ -152,28 +154,33 @@ public class IndexTool{
   		}
   	}
 
-  	public Vector<String> allWords() throws IOException {
-    	Vector<String> words = new Vector<>();
+  	public ArrayList<String> allWords() throws IOException {
+    	ArrayList<String> words = new ArrayList<>();
     	FastIterator i = hashtable1.keys();
     	String key;
 		while ((key = (String) i.next()) != null) {
-			if (key.matches(".*\\d+.*")){
+			if (key.matches(".*\\d+.*")||key.length()>15){
 				continue;
 			} else {
 				words.add(key);
 			}
 		}
+		java.util.Collections.sort(words);
 		return words;
 	}
 
   	public static void main(String args[]) throws IOException {
     	RecordManager recman = RecordManagerFactory.createRecordManager("web/database");
     	IndexTool wordIndexer = new IndexTool(recman, "word");
-    	wordIndexer.printAll();
-    	String abc = "fff";
+    	for (String word:wordIndexer.allWords()){
+    		System.out.println(word);
+		}
+    	String abc = "f123ff";
     	if (abc.matches(".*\\d+.*")){
     		System.out.println("have number");
 		}
+		String aa = wordIndexer.allWords().get(2);
+		System.out.println(aa);
 
 	}
 }

@@ -42,6 +42,19 @@
             color: white;
         }
 
+        #sidebar{
+            padding-left: 0px;
+        }
+
+        .maxheight{
+            max-height:100vh;
+            overflow: auto;
+        }
+
+        #panelGp{
+            padding-right: 30px;
+        }
+
         main {
             padding-bottom: 10010px;
             margin-bottom: -10000px;
@@ -96,6 +109,11 @@
 
     </style>
 
+    <%--bootstrap--%>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <script type="text/javascript">
         /* =============================
          This script generates sample text for the body content.
@@ -132,110 +150,128 @@
 <div id="wrapper">
 
     <main>
-        <div id="content">
-            <div class="innertube">
-                <h1>Heading</h1>
-                <form method="post" action="searchResult.jsp">
-                    <p>Please input your query here:</p>
-                    <input type="text" size="100" name="txtname">
-                    <input type="submit" value="Enter">
-                </form>
-                <%--<% System.out.println("aaa"); %>--%>
-                <%
-                    out.println("Your query: "+request.getParameter("txtname")+"<br/>");
 
-                    if(request.getParameter("txtname")!=null)
-                    {
+        <div class="container">
+            <div class="row">
 
-                        String string1 = request.getParameter("txtname");
+                <div id="sidebar" class="col-sm-2 pull left">
+                    <div class="sidebar-nav maxheight">
+                        <h3>Stem Word</h3>
+                        <p style="font-size: 12px;">Click on to see available word</p>
+                        <div id="panelGp" class="panel-group">
+                            <div class="panel panel-default">
+                                <%
+                                    List<String> availableWord = SearchTool.giveAllWords();
+                                    out.write("<div class=\"panel-heading\">");
+                                    out.write("<p class=\"panel-title\">");
+                                    out.write("<a data-toggle=\"collapse\" href=\"#collapse1\">"+availableWord.get(1).charAt(0)+"</a>");
+                                    out.write("</p>");
+                                    out.write("</div>");
+                                    out.write("<div id=\"collapse1\" class=\"panel-collapse collapse\"> ");
+                                    out.write("<ul class=\"list-group\">");
+                                    out.write("<li class=\"list-group-item\">"+availableWord.get(1)+"</li>");
+                                    for (int i = 2; i<availableWord.size();i++){
+                                        if (availableWord.get(i).charAt(0)!=availableWord.get(i-1).charAt(0)){
+                                            out.write("</ul>");
+                                            out.write("</div>");
+                                            out.write("<div class=\"panel-heading\">");
+                                            out.write("<p class=\"panel-title\">");
+                                            out.write("<a data-toggle=\"collapse\" href=\"#collapse"+String.valueOf(i)+"\">"+availableWord.get(i).charAt(0)+"</a>");
+                                            out.write("</p>");
+                                            out.write("</div>");
+                                            out.write("<div id=\"collapse" +String.valueOf(i)+ "\" class=\"panel-collapse collapse\"> ");
+                                            out.write("<ul class=\"list-group\">");
+                                            out.write("<li class=\"list-group-item\">" +availableWord.get(i)+ "</li>");
 
-                        String[] str1 = string1.split(" ");
-                        List<String> list = Arrays.asList(str1);
-                        Vector<String> vector = new Vector<String>(list);
-
-                        Vector<Webpage> result = SearchTool.search(vector);
-                        out.println("Total pages found: "+result.size()+"<br/>");
-                        out.println("The results are:<hr/>");
-                        if(result.size() > 0){
-                            out.println("<table>");
-
-                            for(int i = 0; i < result.size(); i++){
-                                Webpage temp = result.elementAt(i);
-                                out.println("<tr><td valign=\"top\">"+temp.getScore()+"</td>");
-                                out.println("<td>");
-                                out.println("<a href=\""+temp.getURL()+"\"> "+temp.getTitle()+"</a><br/>");
-                                out.println("<a href=\""+temp.getURL()+"\"> "+temp.getURL()+"</a><br/>");
-                                out.println(temp.getLastUpdate()+", "+temp.getPageSize()+"<br/>");
-                                Vector<Word> wordVector = temp.getKeyword();
-                                for(int j = 0; j < wordVector.size(); j++){
-                                    out.print(wordVector.elementAt(j).getText()+" "+wordVector.elementAt(j).getFreq()+"; ");
-                                    if(j==4){
-                                        out.println("<br/>");
-                                        break;
+                                        } else {
+                                            out.write("<li class=\"list-group-item\">" +availableWord.get(i)+ "</li>");
+                                        }
                                     }
-                                }
-                                Vector<String> parent = temp.getParentLk();
-                                if (parent.elementAt(0).equals("-1")){
-                                    out.println("No Parent Link"+"<br/>");
-                                } else {
-                                    for (int j = 0; j < parent.size(); j++) {
-                                        out.println(parent.elementAt(j) + "<br/>");
+                                %>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div id="content">
+                    <div class="innertube">
+                        <h1>Heading</h1>
+                        <form method="post" action="searchResult.jsp">
+                            <p>Please input your query here:</p>
+                            <input type="text" size="100" name="txtname">
+                            <input type="submit" value="Enter">
+                        </form>
+                        <%
+                            out.println("Your query: "+request.getParameter("txtname")+"<br/>");
+
+                            if(request.getParameter("txtname")!=null)
+                            {
+
+                                String string1 = request.getParameter("txtname");
+
+                                String[] str1 = string1.split(" ");
+                                List<String> list = Arrays.asList(str1);
+                                Vector<String> vector = new Vector<String>(list);
+
+                                Vector<Webpage> result = SearchTool.search(vector);
+                                out.println("Total pages found: "+result.size()+"<br/>");
+                                out.println("The results are:<hr/>");
+                                if(result.size() > 0){
+                                    out.println("<table>");
+
+                                    for(int i = 0; i < result.size(); i++){
+                                        Webpage temp = result.elementAt(i);
+                                        out.println("<tr><td valign=\"top\">"+temp.getScore()+"</td>");
+                                        out.println("<td>");
+                                        out.println("<a href=\""+temp.getURL()+"\"> "+temp.getTitle()+"</a><br/>");
+                                        out.println("<a href=\""+temp.getURL()+"\"> "+temp.getURL()+"</a><br/>");
+                                        out.println(temp.getLastUpdate()+", "+temp.getPageSize()+"<br/>");
+                                        Vector<Word> wordVector = temp.getKeyword();
+                                        for(int j = 0; j < wordVector.size(); j++){
+                                            out.print(wordVector.elementAt(j).getText()+" "+wordVector.elementAt(j).getFreq()+"; ");
+                                            if(j==4){
+                                                out.println("<br/>");
+                                                break;
+                                            }
+                                        }
+                                        Vector<String> parent = temp.getParentLk();
+                                        if (parent.elementAt(0).equals("-1")){
+                                            out.println("No Parent Link"+"<br/>");
+                                        } else {
+                                            for (int j = 0; j < parent.size(); j++) {
+                                                out.println(parent.elementAt(j) + "<br/>");
+                                            }
+                                        }
+                                        Vector<String> child = temp.getChildLk();
+                                        if (child.elementAt(0).equals("-1")){
+                                            out.println("No Child Link"+"<br/>");
+                                        } else {
+                                            for (int j = 0; j < child.size(); j++) {
+                                                out.println(child.elementAt(j) + "<br/>");
+                                            }
+                                        }
+                                        out.println("<br/></td></tr>");
+                                        if(i >= 30)break;
                                     }
+                                    out.println("</table>");
+                                }else{
+                                    out.println("No match result");
                                 }
-                                Vector<String> child = temp.getChildLk();
-                                if (child.elementAt(0).equals("-1")){
-                                    out.println("No Child Link"+"<br/>");
-                                } else {
-                                    for (int j = 0; j < child.size(); j++) {
-                                        out.println(child.elementAt(j) + "<br/>");
-                                    }
-                                }
-                                out.println("<br/></td></tr>");
-                                if(i >= 30)break;
                             }
-                            out.println("</table>");
-                        }else{
-                            out.println("No match result");
-                        }
-                    }
-                    else
-                    {
-                        out.println("You input nothing");
-                    }
+                            else
+                            {
+                                out.println("You input nothing");
+                            }
 
-                %>
+                        %>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
-
-    <nav id="nav">
-        <div class="innertube">
-            <h3>Stem Word List</h3>
-            <ul>
-                <li><a href="#">Link 1</a></li>
-                <li><a href="#">Link 2</a></li>
-                <li><a href="#">Link 3</a></li>
-                <li><a href="#">Link 4</a></li>
-                <li><a href="#">Link 5</a></li>
-            </ul>
-            <h3>Left heading</h3>
-            <ul>
-                <li><a href="#">Link 1</a></li>
-                <li><a href="#">Link 2</a></li>
-                <li><a href="#">Link 3</a></li>
-                <li><a href="#">Link 4</a></li>
-                <li><a href="#">Link 5</a></li>
-            </ul>
-            <h3>Left heading</h3>
-            <ul>
-                <li><a href="#">Link 1</a></li>
-                <li><a href="#">Link 2</a></li>
-                <li><a href="#">Link 3</a></li>
-                <li><a href="#">Link 4</a></li>
-                <li><a href="#">Link 5</a></li>
-            </ul>
-        </div>
-    </nav>
 
 </div>
 
