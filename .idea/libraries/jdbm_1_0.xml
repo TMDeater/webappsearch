@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jdbm-1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../webappsearch/web/WEB-INF/lib/jdbm-1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
