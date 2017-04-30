@@ -163,21 +163,29 @@
                                 out.println("<a href=\""+temp.getURL()+"\"> "+temp.getTitle()+"</a><br/>");
                                 out.println("<a href=\""+temp.getURL()+"\"> "+temp.getURL()+"</a><br/>");
                                 out.println(temp.getLastUpdate()+", "+temp.getPageSize()+"<br/>");
-                                Vector<Word> v1 = temp.getKeyword();
-                                for(int j = 0; j < v1.size(); j++){
-                                    out.print(v1.elementAt(j).getText()+" "+v1.elementAt(j).getFreq()+"; ");
+                                Vector<Word> wordVector = temp.getKeyword();
+                                for(int j = 0; j < wordVector.size(); j++){
+                                    out.print(wordVector.elementAt(j).getText()+" "+wordVector.elementAt(j).getFreq()+"; ");
                                     if(j==4){
                                         out.println("<br/>");
                                         break;
                                     }
                                 }
-                                Vector<String> p = temp.getParentLk();
-                                for(int j = 0; j< p.size(); j++){
-                                    out.println(p.elementAt(j)+"<br/>");
+                                Vector<String> parent = temp.getParentLk();
+                                if (parent.elementAt(0).equals("-1")){
+                                    out.println("No Parent Link"+"<br/>");
+                                } else {
+                                    for (int j = 0; j < parent.size(); j++) {
+                                        out.println(parent.elementAt(j) + "<br/>");
+                                    }
                                 }
-                                Vector<String> c = temp.getChildLk();
-                                for(int j = 0; j< c.size(); j++){
-                                    out.println(c.elementAt(j)+"<br/>");
+                                Vector<String> child = temp.getChildLk();
+                                if (child.elementAt(0).equals("-1")){
+                                    out.println("No Child Link"+"<br/>");
+                                } else {
+                                    for (int j = 0; j < child.size(); j++) {
+                                        out.println(child.elementAt(j) + "<br/>");
+                                    }
                                 }
                                 out.println("<br/></td></tr>");
                                 if(i >= 30)break;

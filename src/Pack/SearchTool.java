@@ -37,10 +37,10 @@ public class SearchTool {
     private static IndexTool titleMaxTermFreq;
 
     public SearchTool() throws IOException {
-        stopStem = new StemStop(new URL("http://localhost:8080/stopwords.txt"));
+        stopStem = new StemStop("web/stopwords.txt");
         TaskList = new Vector<String>();
         DoneList = new Vector<String>();
-        recManager = RecordManagerFactory.createRecordManager("http://localhost:8080/database.db");
+        recManager = RecordManagerFactory.createRecordManager("D:\\webappsearch\\web\\database");
 
         loadFromDatabase();
     }
@@ -55,10 +55,10 @@ public class SearchTool {
         //load from the database
         titleInverted = new InvertedIndex(recManager, "titleInvertedIndex");
         invertedIdx = new InvertedIndex(recManager, "invertedIndex");
-        ForwardIdx = new InvertedIndex(recManager, "ForwardIdx");
+        ForwardIdx = new InvertedIndex(recManager, "ForwardIndex");
         fullWordInverted = new InvertedIndex(recManager, "fullInvertedIndex");
         fullWordForward = new InvertedIndex(recManager, "fullForwardIndex");
-        ChildPar = new InvertedIndex(recManager, "ParChild");
+        ChildPar = new InvertedIndex(recManager, "ParentChild");
         ParChild = new InvertedIndex(recManager, "PC");
         Pageinfm = new PageInfm(recManager, "PPT");
         maxTermFreq = new IndexTool(recManager, "maxTermFreq");
@@ -66,7 +66,7 @@ public class SearchTool {
     }
 
     public static Vector<Webpage> search(Vector<String> keywords) throws IOException{
-        stopStem = new StemStop(new URL("http://localhost:8080/stopwords.txt"));
+        stopStem = new StemStop("D:\\webappsearch\\web\\stopwords.txt");
         recManager = RecordManagerFactory.createRecordManager("D:\\webappsearch\\web\\database");
         loadFromDatabase();
 
@@ -334,8 +334,10 @@ public class SearchTool {
         pageResult.setLastUpdate(Pageinfm.getLastDate(index));
         pageResult.setPageSize(Pageinfm.getPageSize(index));
 
+        int idx = PageIdxr.getIdxNumber(Pageinfm.getUrl(index));
+
         //keywords
-        WordsAndWordFreqForPage(index, pageResult);
+        WordsAndWordFreqForPage(idx, pageResult);
 
         //child Links
         String child = ParChild.getValue(index);
@@ -355,8 +357,8 @@ public class SearchTool {
         return pageResult;
     }
 
-    private static void WordsAndWordFreqForPage(String index, Webpage pageResult) throws IOException {
-        String WordList = ForwardIdx.getValue(index);
+    private static void WordsAndWordFreqForPage(int index, Webpage pageResult) throws IOException {
+        String WordList = ForwardIdx.getValue(String.valueOf(index));
         //temp is docID to keywords
         String[] arrayOfKeywords = WordList.split(" ");
         for(int i = 0; i < arrayOfKeywords.length;i++){
@@ -366,7 +368,7 @@ public class SearchTool {
             String[] docIDAndFreqPair = docIDAndFreqArray.split(" ");
             for(int j = 0 ; j < docIDAndFreqPair.length;j++){
                 String[] docIDAndFreq = docIDAndFreqPair[j].split(":");
-                if(index.compareTo(docIDAndFreq[0])==0){
+                if(String.valueOf(index).compareTo(docIDAndFreq[0])==0){
                     a.setFreq(Integer.parseInt(docIDAndFreq[1]));
                     pageResult.addKeyword(a);
                     break;
