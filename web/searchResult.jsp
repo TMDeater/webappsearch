@@ -38,7 +38,7 @@
 
         #header h1 {
             margin: 0;
-            padding-top: 15px;
+            padding-top: 10px;
             color: white;
         }
 
@@ -52,7 +52,7 @@
         }
 
         #panelGp{
-            padding-right: 30px;
+            padding-right: 0px;
         }
 
         main {
@@ -154,11 +154,11 @@
         <div class="container">
             <div class="row">
 
-                <div id="sidebar" class="col-sm-2 pull left">
-                    <div class="sidebar-nav maxheight">
+                <div class="col-sm-2 pull left">
+                    <div id="sidebar" class="sidebar-nav maxheight" style="padding-right: 20px">
                         <h3>Stem Word</h3>
                         <p style="font-size: 12px;">Click on to see available word</p>
-                        <div id="panelGp" class="panel-group">
+                        <div class="panel-group">
                             <div class="panel panel-default">
                                 <%
                                     List<String> availableWord = SearchTool.giveAllWords();
@@ -169,7 +169,13 @@
                                     out.write("</div>");
                                     out.write("<div id=\"collapse1\" class=\"panel-collapse collapse\"> ");
                                     out.write("<ul class=\"list-group\">");
-                                    out.write("<li class=\"list-group-item\">"+availableWord.get(1)+"</li>");
+                                    //out.write("<li class=\"list-group-item\">"+availableWord.get(1)+"</li>");
+//                  out.write("<li class=\"list-group-item\"><div onclick=\"" +
+//                          "document.forms['searchform']['txtname'].value +="+availableWord.get(1)+" "+"\"" +
+//                          ">"+availableWord.get(1)+"</div></li>");
+                                    out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                                            "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(1)+" ' \"\n" +
+                                            "              >"+ availableWord.get(1)+"</li>");
                                     for (int i = 2; i<availableWord.size();i++){
                                         if (availableWord.get(i).charAt(0)!=availableWord.get(i-1).charAt(0)){
                                             out.write("</ul>");
@@ -181,10 +187,14 @@
                                             out.write("</div>");
                                             out.write("<div id=\"collapse" +String.valueOf(i)+ "\" class=\"panel-collapse collapse\"> ");
                                             out.write("<ul class=\"list-group\">");
-                                            out.write("<li class=\"list-group-item\">" +availableWord.get(i)+ "</li>");
+                                            out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                                                    "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(i)+" ' \"\n" +
+                                                    "              >"+ availableWord.get(i)+"</li>");
 
                                         } else {
-                                            out.write("<li class=\"list-group-item\">" +availableWord.get(i)+ "</li>");
+                                            out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                                                    "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(i)+" ' \"\n" +
+                                                    "              >"+ availableWord.get(i)+"</li>");
                                         }
                                     }
                                 %>
@@ -196,13 +206,13 @@
             </div>
 
             <div>
-                <div id="content">
+                <div id="content" class="maxheight">
                     <div class="innertube">
                         <h1>Heading</h1>
-                        <form method="post" action="searchResult.jsp">
+                        <form name="searchform" method="post" action="searchResult.jsp">
                             <p>Please input your query here:</p>
                             <input type="text" size="100" name="txtname">
-                            <input type="submit" value="Enter">
+                            <input id="enterButton" type="submit" value="Enter">
                         </form>
                         <%
                             out.println("Your query: "+request.getParameter("txtname")+"<br/>");
@@ -224,12 +234,25 @@
 
                                     for(int i = 0; i < result.size(); i++){
                                         Webpage temp = result.elementAt(i);
-                                        out.println("<tr><td valign=\"top\">"+temp.getScore()+"</td>");
+                                        Vector<Word> wordVector = temp.getKeyword();
+                                        String mostFiveWord = new String(wordVector.elementAt(0).getText());
+                                        for(int j = 1; j < wordVector.size(); j++){
+                                            mostFiveWord = mostFiveWord+" "+wordVector.elementAt(j).getText();
+                                            if(j==4){
+                                                break;
+                                            }
+                                        }
+                                        out.println("<tr><td valign=\"top\">Score: &nbsp<br/>"+temp.getScore()+"&nbsp<br/>\n"+
+                                                "            <button type=\"submit\" class=\"btn btn-default\" onmousedown=\"\n" +
+                                                "              document.forms['searchform']['txtname'].value ='"+ mostFiveWord +" ' \"\n" +
+                                                "              onmouseup=\"document.getElementById('enterButton').click();  \">Similar page</button>&nbsp\n"+
+                                                "               </td>");
                                         out.println("<td>");
                                         out.println("<a href=\""+temp.getURL()+"\"> "+temp.getTitle()+"</a><br/>");
+
                                         out.println("<a href=\""+temp.getURL()+"\"> "+temp.getURL()+"</a><br/>");
-                                        out.println(temp.getLastUpdate()+", "+temp.getPageSize()+"<br/>");
-                                        Vector<Word> wordVector = temp.getKeyword();
+                                        out.println("Last Update: "+temp.getLastUpdate()+", Page Size: "+temp.getPageSize()+"<br/>");
+                                        out.write("Keyword: <br/>");
                                         for(int j = 0; j < wordVector.size(); j++){
                                             out.print(wordVector.elementAt(j).getText()+" "+wordVector.elementAt(j).getFreq()+"; ");
                                             if(j==4){
@@ -237,6 +260,7 @@
                                                 break;
                                             }
                                         }
+                                        out.write("Parent Link: <br/>");
                                         Vector<String> parent = temp.getParentLk();
                                         if (parent.elementAt(0).equals("-1")){
                                             out.println("No Parent Link"+"<br/>");
@@ -245,6 +269,7 @@
                                                 out.println(parent.elementAt(j) + "<br/>");
                                             }
                                         }
+                                        out.write("Child Link: <br/>");
                                         Vector<String> child = temp.getChildLk();
                                         if (child.elementAt(0).equals("-1")){
                                             out.println("No Child Link"+"<br/>");

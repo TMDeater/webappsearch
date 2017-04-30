@@ -45,7 +45,7 @@
     }
 
     #panelGp{
-      padding-right: 30px;
+      padding-right: 0px;
     }
 
     main {
@@ -133,8 +133,8 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-sm-2 pull left">
-          <div id="sidebar" class="sidebar-nav maxheight">
+        <div class="col-sm-2 pull left" >
+          <div id="sidebar" class="sidebar-nav maxheight" style="padding-right: 20px">
             <h3>Stem Word</h3>
             <p style="font-size: 12px;">Click on to see available word</p>
             <div class="panel-group">
@@ -148,7 +148,13 @@
                   out.write("</div>");
                   out.write("<div id=\"collapse1\" class=\"panel-collapse collapse\"> ");
                   out.write("<ul class=\"list-group\">");
-                  out.write("<li class=\"list-group-item\">"+availableWord.get(1)+"</li>");
+                  //out.write("<li class=\"list-group-item\">"+availableWord.get(1)+"</li>");
+//                  out.write("<li class=\"list-group-item\"><div onclick=\"" +
+//                          "document.forms['searchform']['txtname'].value +="+availableWord.get(1)+" "+"\"" +
+//                          ">"+availableWord.get(1)+"</div></li>");
+                  out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                          "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(1)+" ' \"\n" +
+                          "              >"+ availableWord.get(1)+"</li>");
                   for (int i = 2; i<availableWord.size();i++){
                     if (availableWord.get(i).charAt(0)!=availableWord.get(i-1).charAt(0)){
                         out.write("</ul>");
@@ -160,10 +166,14 @@
                         out.write("</div>");
                         out.write("<div id=\"collapse" +String.valueOf(i)+ "\" class=\"panel-collapse collapse\"> ");
                         out.write("<ul class=\"list-group\">");
-                        out.write("<li class=\"list-group-item\">" +availableWord.get(i)+ "</li>");
+                        out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                              "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(i)+" ' \"\n" +
+                              "              >"+ availableWord.get(i)+"</li>");
 
                     } else {
-                    out.write("<li class=\"list-group-item\">" +availableWord.get(i)+ "</li>");
+                      out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                              "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(i)+" ' \"\n" +
+                              "              >"+ availableWord.get(i)+"</li>");
                     }
                   }
                 %>
@@ -178,7 +188,7 @@
           <div id="content">
             <div class="innertube">
               <h1>Heading</h1>
-              <form method="post" action="searchResult.jsp">
+              <form name="searchform" method="post" action="searchResult.jsp">
                 <p>Please input your query here:</p>
                 <input type="text" size="100" name="txtname">
                 <input type="submit" value="Enter">
