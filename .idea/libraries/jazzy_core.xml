@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jazzy-core">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../webappsearch/web/WEB-INF/lib/jazzy-core.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

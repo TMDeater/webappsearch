@@ -43,5 +43,7 @@
     <orderEntry type="library" name="commons-lang3-3.5" level="project" />
     <orderEntry type="library" name="jdbm-1.0" level="project" />
     <orderEntry type="library" name="htmlparser" level="project" />
+    <orderEntry type="library" name="jortho" level="project" />
+    <orderEntry type="library" name="jazzy-core" level="project" />
   </component>
 </module>

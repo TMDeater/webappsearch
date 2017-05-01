@@ -31,6 +31,12 @@
             line-height: 1.5em;
         }
 
+        hr.divider_style{
+            color: #0000A0;
+            background-color: #0000A0;
+            height: 3px;
+        }
+
         #header {
             background: #87CEEB;
             height: 50px;
@@ -84,7 +90,7 @@
         }
 
         #content {
-            margin-left: 230px; /* Same as 'nav' width */
+            margin-left: 100px; /* Same as 'nav' width */
         }
 
         .innertube {
@@ -227,6 +233,18 @@
                                 Vector<String> vector = new Vector<String>(list);
 
                                 Vector<Webpage> result = SearchTool.search(vector);
+                                if (result.size() < 2){
+                                    Vector<String> suggest= SpellCheckExample.check(vector);
+                                    out.println("<hr class=\"divider_style\" ><div style=\"font-size:15px\">Are you looking for:</div><br/>");
+                                    for (int i=0;i<suggest.size();i++){
+                                        String word = suggest.elementAt(i);
+                                        out.println("<div style=\"font-style:italic\" onclick=\"document.forms['searchform']['txtname'].value +='" + word + " ' \">"+word+"</div><t/>");
+                                        if ((i%5)==0 && i>0){
+                                            out.println("<br/>");
+                                        }
+                                    }
+                                    out.println("<br/><hr class=\"divider_style\">");
+                                }
                                 out.println("Total pages found: "+result.size()+"<br/>");
                                 out.println("The results are:<hr/>");
                                 if(result.size() > 0){
@@ -273,6 +291,8 @@
                                         Vector<String> child = temp.getChildLk();
                                         if (child.elementAt(0).equals("-1")){
                                             out.println("No Child Link"+"<br/>");
+                                        } else if (child.size()>5){
+                                            
                                         } else {
                                             for (int j = 0; j < child.size(); j++) {
                                                 out.println(child.elementAt(j) + "<br/>");
