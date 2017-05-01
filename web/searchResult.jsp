@@ -9,24 +9,26 @@
 <%@page import="Pack.*" %>
 <%@page import="java.util.*" %>
 <%@page import="jdbm.*" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: MSI
-  Date: 2017/4/29
-  Time: 14:26
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="java.net.URLDecoder" %>
+
 <%
-    String txtname=request.getParameter("txtname");
-    if(txtname==null) txtname="";
+    String cookieName = "txtname";
+    Cookie cookies [] = request.getCookies ();
 
-
-    Date now = new Date();
-    String timestamp = now.toString();
-    Cookie cookie = new Cookie ("txtname",txtname);
-    cookie.setMaxAge(365 * 24 * 60 * 60);
-    response.addCookie(cookie);
-
+    Vector<String> listNow = new Vector<>();
+    NoDuplicatesList<Cookie> cookieHistory = new NoDuplicatesList<>();
+    if (cookies != null){
+        for (int i = 0; i < cookies.length; i++) {
+            String cookieVal = URLDecoder.decode(cookies[i].getValue(),"UTF-8");
+            if (cookies [i].getName().contains(cookieName)){
+                if(!(listNow.contains(cookieVal))) {
+                    System.out.println(cookieVal);
+                    listNow.add(cookieVal);
+                    cookieHistory.add(cookies[i]);
+                }
+            }
+        }
+    }
 %>
 <!DOCTYPE html>
 <!-- Template by quackit.com -->
@@ -72,6 +74,16 @@
         }
 
         #sidebar{
+            height:100em;
+            padding:10px;
+        }
+
+        #middleSearchArea{
+            height:100em;
+            padding:10px;
+        }
+
+        #recentSearch{
             height:100em;
             padding:10px;
         }
@@ -210,21 +222,22 @@
             </div>
             </div>
 
-            <div class="col-sm-10">
-                <div id="sidebar">
+            <div class="col-sm-7">
+                <div id="middleSearchArea">
                         <h1>Search</h1>
-                        <form name="searchform" method="post" action="searchResult.jsp">
+                        <form name="searchform" method="post" action="setCookies.jsp">
                             <p>Please input your query here:</p>
                             <input type="text" size="100" name="txtname" style="width:300px;">
                             <input id="enterButton" type="submit" value="Enter">
                         </form>
                         <%
-                            out.println("Your query: "+request.getParameter("txtname")+"<br/>");
+                            String txtname = new String(URLDecoder.decode(cookies[cookies.length-1].getValue(),"UTF-8"));
+                            out.println("Your query: "+txtname+"<br/>");
 
-                            if(request.getParameter("txtname")!=null)
+                            if(txtname!=null)
                             {
 
-                                String string1 = request.getParameter("txtname");
+                                String string1 = txtname;
 
                                 String[] str1 = string1.split(" ");
                                 List<String> list = Arrays.asList(str1);
@@ -322,6 +335,23 @@
                             }
 
                         %>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div id="recentSearch">
+                    <h3>Recent Search</h3>
+                    <ul class="list-group">
+                    <%
+                        for (Cookie sgCookie:cookieHistory){
+                            String temp = new String(URLDecoder.decode(sgCookie.getValue(),"UTF-8"));
+                            out.println("<li class=\"list-group-item\" onmousedown=\""+
+                                        "document.forms['searchform']['txtname'].value +='"+
+                                        temp+" ' \" onmouseup=\"document.getElementById('enterButton').click();\">"+
+                                        temp+"</li>");
+                        }
+                    %>
+                    </ul>
                 </div>
             </div>
         </div>

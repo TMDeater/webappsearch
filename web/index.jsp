@@ -12,14 +12,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<%--%>
-  <%--String txtname=request.getParameter("txtname");--%>
-  <%--if(txtname==null) txtname="";--%>
-  <%--Cookie cookie = new Cookie ("txtname",txtname);--%>
-  <%--cookie.setMaxAge(365 * 24 * 60 * 60);--%>
-  <%--response.addCookie(cookie);--%>
 
-<%--%>--%>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -184,7 +177,7 @@
         <div class="col-sm-10">
           <div id="sidebar">
                 <h1>Search</h1>
-                <form name="searchform" method="post" action="searchResult.jsp">
+                <form name="searchform" method="post" action="setCookies.jsp">
                   <p>Please input your query here:</p>
                   <input type="text" size="100" name="txtname" style="width:300px;">
                   <input type="submit" value="Enter">
