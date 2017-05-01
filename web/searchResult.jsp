@@ -14,12 +14,16 @@
 <%
     String cookieName = "txtname";
     Cookie cookies [] = request.getCookies ();
+    Cookie queryCookie = null;
 
     Vector<String> listNow = new Vector<>();
     NoDuplicatesList<Cookie> cookieHistory = new NoDuplicatesList<>();
     if (cookies != null){
         for (int i = 0; i < cookies.length; i++) {
             String cookieVal = URLDecoder.decode(cookies[i].getValue(),"UTF-8");
+            if (cookies[i].getName().equals("query")){
+                queryCookie = cookies[i];
+            }
             if (cookies [i].getName().contains(cookieName)){
                 if(!(listNow.contains(cookieVal))) {
                     System.out.println(cookieVal);
@@ -233,7 +237,7 @@
                             <input id="enterButton" type="submit" value="Enter">
                         </form>
                         <%
-                            String txtname = new String(URLDecoder.decode(cookies[cookies.length-1].getValue(),"UTF-8"));
+                            String txtname = new String(URLDecoder.decode(queryCookie.getValue(),"UTF-8"));
                             out.println("Your query: "+txtname+"<br/>");
 
                             if(txtname!=null)
@@ -251,7 +255,7 @@
                                     out.println("<hr class=\"divider_style\" ><div style=\"font-size:15px\">Are you looking for:</div><br/>");
                                     for (int i=0;i<suggest.size();i++){
                                         String word = suggest.elementAt(i);
-                                        out.println("<div style=\"font-style:italic\" onclick=\"document.forms['searchform']['txtname'].value +='" + word + " ' \">"+word+"</div><t/>");
+                                        out.println("<div style=\"font-style:italic;cursor:pointer;\" onclick=\"document.forms['searchform']['txtname'].value +='" + word + " ' \">"+word+"</div><t/>");
                                         if ((i%5)==0 && i>0){
                                             out.println("<br/>");
                                         }
@@ -347,7 +351,7 @@
                     <%
                         for (Cookie sgCookie:cookieHistory){
                             String temp = new String(URLDecoder.decode(sgCookie.getValue(),"UTF-8"));
-                            out.println("<li class=\"list-group-item\" onmousedown=\""+
+                            out.println("<li style=\"cursor:pointer;\" class=\"list-group-item\" onmousedown=\""+
                                         "document.forms['searchform']['txtname'].value +='"+
                                         temp+" ' \" onmouseup=\"document.getElementById('enterButton').click();\">"+
                                         temp+"</li>");

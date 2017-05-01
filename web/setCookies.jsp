@@ -16,7 +16,10 @@
     }
     Cookie cookie = new Cookie ("txtname"+cookies.length, URLEncoder.encode(txtname,"UTF-8"));
     cookie.setMaxAge(24 * 60 * 60);
+    Cookie queryCookie = new Cookie ("query", URLEncoder.encode(txtname,"UTF-8"));
+    queryCookie.setMaxAge(24 * 60 * 60);
     response.addCookie(cookie);
+    response.addCookie(queryCookie);
 %>
 <html>
 <head>
