@@ -3,6 +3,7 @@
 <%--<%@ page import="jdbm.RecordManagerFactory" %>--%>
 <%@ page import="jdbm.*" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Date" %>
 <%--
   Created by IntelliJ IDEA.
   User: MSI
@@ -11,6 +12,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--<%--%>
+  <%--String txtname=request.getParameter("txtname");--%>
+  <%--if(txtname==null) txtname="";--%>
+  <%--Cookie cookie = new Cookie ("txtname",txtname);--%>
+  <%--cookie.setMaxAge(365 * 24 * 60 * 60);--%>
+  <%--response.addCookie(cookie);--%>
+
+<%--%>--%>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -24,6 +33,7 @@
       line-height: 1.5em;
     }
 
+
     #header {
       background: #87CEEB;
       height: 50px;
@@ -36,11 +46,11 @@
     }
 
     #sidebar{
-      padding-left: 0px;
+      height: 100%;
+      padding: 10px;
     }
 
     .maxheight{
-      max-height:100vh;
       overflow: auto;
     }
 
@@ -49,19 +59,6 @@
     }
 
     main {
-      padding-bottom: 10010px;
-      margin-bottom: -10000px;
-      float: left;
-      width: 100%;
-    }
-
-    #nav {
-      padding-bottom: 10010px;
-      margin-bottom: -10000px;
-      float: left;
-      width: 230px;
-      margin-left: -100%;
-      background: #eee;
     }
 
     #footer {
@@ -77,11 +74,11 @@
     }
 
     #content {
-      margin-left: 230px; /* Same as 'nav' width */
+      margin-left: 0px; /* Same as 'nav' width */
     }
 
     .innertube {
-      margin: 15px; /* Padding for content */
+      margin: 0px; /* Padding for content */
       margin-top: 0;
     }
 
@@ -130,11 +127,10 @@
 
 <div id="wrapper">
   <main>
-    <div class="container">
       <div class="row">
 
-        <div class="col-sm-2 pull left" >
-          <div id="sidebar" class="sidebar-nav maxheight" style="padding-right: 20px">
+        <div class="col-sm-2" >
+          <div id="sidebar" class="maxheight" >
             <h3>Stem Word</h3>
             <p style="font-size: 12px;">Click on to see available word</p>
             <div class="panel-group">
@@ -157,16 +153,16 @@
                           "              >"+ availableWord.get(1)+"</li>");
                   for (int i = 2; i<availableWord.size();i++){
                     if (availableWord.get(i).charAt(0)!=availableWord.get(i-1).charAt(0)){
-                        out.write("</ul>");
-                        out.write("</div>");
-                        out.write("<div class=\"panel-heading\">");
-                        out.write("<p class=\"panel-title\">");
-                        out.write("<a data-toggle=\"collapse\" href=\"#collapse"+String.valueOf(i)+"\">"+availableWord.get(i).charAt(0)+"</a>");
-                        out.write("</p>");
-                        out.write("</div>");
-                        out.write("<div id=\"collapse" +String.valueOf(i)+ "\" class=\"panel-collapse collapse\"> ");
-                        out.write("<ul class=\"list-group\">");
-                        out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                      out.write("</ul>");
+                      out.write("</div>");
+                      out.write("<div class=\"panel-heading\">");
+                      out.write("<p class=\"panel-title\">");
+                      out.write("<a data-toggle=\"collapse\" href=\"#collapse"+String.valueOf(i)+"\">"+availableWord.get(i).charAt(0)+"</a>");
+                      out.write("</p>");
+                      out.write("</div>");
+                      out.write("<div id=\"collapse" +String.valueOf(i)+ "\" class=\"panel-collapse collapse\"> ");
+                      out.write("<ul class=\"list-group\">");
+                      out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
                               "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(i)+" ' \"\n" +
                               "              >"+ availableWord.get(i)+"</li>");
 
@@ -176,32 +172,29 @@
                               "              >"+ availableWord.get(i)+"</li>");
                     }
                   }
+                  out.println("</ul>\n" +
+                          "              </div>");
                 %>
-                  </ul>
-                </div>
+
               </div>
             </div>
           </div>
         </div>
 
-        <div>
-          <div id="content">
-            <div class="innertube">
-              <h1>Heading</h1>
-              <form name="searchform" method="post" action="searchResult.jsp">
-                <p>Please input your query here:</p>
-                <input type="text" size="100" name="txtname">
-                <input type="submit" value="Enter">
-              </form>
-            </div>
+        <div class="col-sm-10">
+          <div id="sidebar">
+                <h1>Search</h1>
+                <form name="searchform" method="post" action="searchResult.jsp">
+                  <p>Please input your query here:</p>
+                  <input type="text" size="100" name="txtname" style="width:300px;">
+                  <input type="submit" value="Enter">
+                </form>
           </div>
         </div>
       </div>
+
     </div>
   </main>
-
-
-
 </div>
 
 <footer id="footer">

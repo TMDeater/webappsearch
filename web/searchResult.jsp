@@ -16,6 +16,18 @@
   Time: 14:26
   To change this template use File | Settings | File Templates.
 --%>
+<%
+    String txtname=request.getParameter("txtname");
+    if(txtname==null) txtname="";
+
+
+    Date now = new Date();
+    String timestamp = now.toString();
+    Cookie cookie = new Cookie ("txtname",txtname);
+    cookie.setMaxAge(365 * 24 * 60 * 60);
+    response.addCookie(cookie);
+
+%>
 <!DOCTYPE html>
 <!-- Template by quackit.com -->
 <html>
@@ -37,6 +49,12 @@
             height: 3px;
         }
 
+        hr.divideresult{
+            color: #08D5EB;
+            background-color: #08D5EB;
+            height: 2px;
+        }
+
         #header {
             background: #87CEEB;
             height: 50px;
@@ -48,12 +66,17 @@
             color: white;
         }
 
+        .websiteTitle{
+            font-family:impact;
+            font-size:15px;
+        }
+
         #sidebar{
-            padding-left: 0px;
+            height:100em;
+            padding:10px;
         }
 
         .maxheight{
-            max-height:100vh;
             overflow: auto;
         }
 
@@ -62,19 +85,7 @@
         }
 
         main {
-            padding-bottom: 10010px;
-            margin-bottom: -10000px;
-            float: left;
-            width: 100%;
-        }
 
-        #nav {
-            padding-bottom: 10010px;
-            margin-bottom: -10000px;
-            float: left;
-            width: 230px;
-            margin-left: -100%;
-            background: #eee;
         }
 
         #footer {
@@ -94,7 +105,7 @@
         }
 
         .innertube {
-            margin: 15px; /* Padding for content */
+            margin: 0px; /* Padding for content */
             margin-top: 0;
         }
 
@@ -120,16 +131,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript">
-        /* =============================
-         This script generates sample text for the body content.
-         You can remove this script and any reference to it.
-         ============================= */
-        var bodyText=["The smaller your reality, the more convinced you are that you know everything.", "If the facts don't fit the theory, change the facts.", "The past has no power over the present moment.", "This, too, will pass.", "</p><p>You will not be punished for your anger, you will be punished by your anger.", "Peace comes from within. Do not seek it without.", "<h3>Heading</h3><p>The most important moment of your life is now. The most important person in your life is the one you are with now, and the most important activity in your life is the one you are involved with now."]
-        function generateText(sentenceCount){
-            for (var i=0; i<sentenceCount; i++)
-                document.write(bodyText[Math.floor(Math.random()*7)]+" ")
-        }
+    <script>
+
     </script>
 
 
@@ -154,70 +157,65 @@
 </header>
 
 <div id="wrapper">
-
     <main>
+        <div class="row">
+            <div class="col-sm-2">
+                <div id="sidebar" class="maxheight">
+                    <h3>Stem Word</h3>
+                    <p style="font-size: 12px;">Click on to see available word</p>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <%
+                                List<String> availableWord = SearchTool.giveAllWords();
+                                out.write("<div class=\"panel-heading\">");
+                                out.write("<p class=\"panel-title\">");
+                                out.write("<a data-toggle=\"collapse\" href=\"#collapse1\">"+availableWord.get(1).charAt(0)+"</a>");
+                                out.write("</p>");
+                                out.write("</div>");
+                                out.write("<div id=\"collapse1\" class=\"panel-collapse collapse\"> ");
+                                out.write("<ul class=\"list-group\">");
+                                //out.write("<li class=\"list-group-item\">"+availableWord.get(1)+"</li>");
+    //                  out.write("<li class=\"list-group-item\"><div onclick=\"" +
+    //                          "document.forms['searchform']['txtname'].value +="+availableWord.get(1)+" "+"\"" +
+    //                          ">"+availableWord.get(1)+"</div></li>");
+                                out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                                        "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(1)+" ' \"\n" +
+                                        "              >"+ availableWord.get(1)+"</li>");
+                                for (int i = 2; i<availableWord.size();i++){
+                                    if (availableWord.get(i).charAt(0)!=availableWord.get(i-1).charAt(0)){
+                                        out.write("</ul>");
+                                        out.write("</div>");
+                                        out.write("<div class=\"panel-heading\">");
+                                        out.write("<p class=\"panel-title\">");
+                                        out.write("<a data-toggle=\"collapse\" href=\"#collapse"+String.valueOf(i)+"\">"+availableWord.get(i).charAt(0)+"</a>");
+                                        out.write("</p>");
+                                        out.write("</div>");
+                                        out.write("<div id=\"collapse" +String.valueOf(i)+ "\" class=\"panel-collapse collapse\"> ");
+                                        out.write("<ul class=\"list-group\">");
+                                        out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                                                "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(i)+" ' \"\n" +
+                                                "              >"+ availableWord.get(i)+"</li>");
 
-        <div class="container">
-            <div class="row">
-
-                <div class="col-sm-2 pull left">
-                    <div id="sidebar" class="sidebar-nav maxheight" style="padding-right: 20px">
-                        <h3>Stem Word</h3>
-                        <p style="font-size: 12px;">Click on to see available word</p>
-                        <div class="panel-group">
-                            <div class="panel panel-default">
-                                <%
-                                    List<String> availableWord = SearchTool.giveAllWords();
-                                    out.write("<div class=\"panel-heading\">");
-                                    out.write("<p class=\"panel-title\">");
-                                    out.write("<a data-toggle=\"collapse\" href=\"#collapse1\">"+availableWord.get(1).charAt(0)+"</a>");
-                                    out.write("</p>");
-                                    out.write("</div>");
-                                    out.write("<div id=\"collapse1\" class=\"panel-collapse collapse\"> ");
-                                    out.write("<ul class=\"list-group\">");
-                                    //out.write("<li class=\"list-group-item\">"+availableWord.get(1)+"</li>");
-//                  out.write("<li class=\"list-group-item\"><div onclick=\"" +
-//                          "document.forms['searchform']['txtname'].value +="+availableWord.get(1)+" "+"\"" +
-//                          ">"+availableWord.get(1)+"</div></li>");
-                                    out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
-                                            "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(1)+" ' \"\n" +
-                                            "              >"+ availableWord.get(1)+"</li>");
-                                    for (int i = 2; i<availableWord.size();i++){
-                                        if (availableWord.get(i).charAt(0)!=availableWord.get(i-1).charAt(0)){
-                                            out.write("</ul>");
-                                            out.write("</div>");
-                                            out.write("<div class=\"panel-heading\">");
-                                            out.write("<p class=\"panel-title\">");
-                                            out.write("<a data-toggle=\"collapse\" href=\"#collapse"+String.valueOf(i)+"\">"+availableWord.get(i).charAt(0)+"</a>");
-                                            out.write("</p>");
-                                            out.write("</div>");
-                                            out.write("<div id=\"collapse" +String.valueOf(i)+ "\" class=\"panel-collapse collapse\"> ");
-                                            out.write("<ul class=\"list-group\">");
-                                            out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
-                                                    "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(i)+" ' \"\n" +
-                                                    "              >"+ availableWord.get(i)+"</li>");
-
-                                        } else {
-                                            out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
-                                                    "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(i)+" ' \"\n" +
-                                                    "              >"+ availableWord.get(i)+"</li>");
-                                        }
+                                    } else {
+                                        out.write("<li style=\"cursor:pointer\" class=\"list-group-item\" onclick=\"\n" +
+                                                "              document.forms['searchform']['txtname'].value +='"+ availableWord.get(i)+" ' \"\n" +
+                                                "              >"+ availableWord.get(i)+"</li>");
                                     }
-                                %>
-                                </ul>
-                            </div>
-                        </div>
+                                }
+                                out.println("</ul>\n" +
+                                        "                        </div>");
+                            %>
                     </div>
                 </div>
             </div>
+            </div>
 
-            <div>
-                <div id="content" class="maxheight">
-                    <div class="innertube">
-                        <h1>Heading</h1>
+            <div class="col-sm-10">
+                <div id="sidebar">
+                        <h1>Search</h1>
                         <form name="searchform" method="post" action="searchResult.jsp">
                             <p>Please input your query here:</p>
-                            <input type="text" size="100" name="txtname">
+                            <input type="text" size="100" name="txtname" style="width:300px;">
                             <input id="enterButton" type="submit" value="Enter">
                         </form>
                         <%
@@ -260,13 +258,13 @@
                                                 break;
                                             }
                                         }
-                                        out.println("<tr><td valign=\"top\">Score: &nbsp<br/>"+temp.getScore()+"&nbsp<br/>\n"+
+                                        out.println("<tr><td valign=\"top\"><br>Score: &nbsp<br/>"+temp.getScore()+"&nbsp<br/>\n"+
                                                 "            <button type=\"submit\" class=\"btn btn-default\" onmousedown=\"\n" +
                                                 "              document.forms['searchform']['txtname'].value ='"+ mostFiveWord +" ' \"\n" +
                                                 "              onmouseup=\"document.getElementById('enterButton').click();  \">Similar page</button>&nbsp\n"+
                                                 "               </td>");
                                         out.println("<td>");
-                                        out.println("<a href=\""+temp.getURL()+"\"> "+temp.getTitle()+"</a><br/>");
+                                        out.println("<a class=\"websiteTitle\" href=\""+temp.getURL()+"\"> "+temp.getTitle()+"</a><br/>");
 
                                         out.println("<a href=\""+temp.getURL()+"\"> "+temp.getURL()+"</a><br/>");
                                         out.println("Last Update: "+temp.getLastUpdate()+", Page Size: "+temp.getPageSize()+"<br/>");
@@ -282,6 +280,13 @@
                                         Vector<String> parent = temp.getParentLk();
                                         if (parent.elementAt(0).equals("-1")){
                                             out.println("No Parent Link"+"<br/>");
+                                        } else if (parent.size()>5){
+                                            out.println("<a href=\"#slide-body\" class=\"btn btn-info btn-sm\" data-toggle=\"collapse\">click to view all "+parent.size()+" pages</a>");
+                                            out.println("<div id=\"slide-body\" class=\"collapse\">");
+                                            for (int j = 0; j < parent.size(); j++) {
+                                                out.println(parent.elementAt(j) + "<br/>");
+                                            }
+                                            out.println("</div>");
                                         } else {
                                             for (int j = 0; j < parent.size(); j++) {
                                                 out.println(parent.elementAt(j) + "<br/>");
@@ -292,13 +297,18 @@
                                         if (child.elementAt(0).equals("-1")){
                                             out.println("No Child Link"+"<br/>");
                                         } else if (child.size()>5){
-
+                                            out.println("<a href=\"#slide-body\" class=\"btn btn-info btn-sm\" data-toggle=\"collapse\">click to view all "+child.size()+" pages</a>");
+                                            out.println("<div id=\"slide-body\" class=\"collapse\">");
+                                            for (int j = 0; j < child.size(); j++) {
+                                                out.println(child.elementAt(j) + "<br/>");
+                                            }
+                                            out.println("</div>");
                                         } else {
                                             for (int j = 0; j < child.size(); j++) {
                                                 out.println(child.elementAt(j) + "<br/>");
                                             }
                                         }
-                                        out.println("<br/></td></tr>");
+                                        out.println("<hr class=\"divideresult\"></td></tr>");
                                         if(i >= 30)break;
                                     }
                                     out.println("</table>");
@@ -312,12 +322,13 @@
                             }
 
                         %>
-                    </div>
                 </div>
             </div>
         </div>
-    </main>
 
+
+        </div>
+    </main>
 </div>
 
 <footer id="footer">
