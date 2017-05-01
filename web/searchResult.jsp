@@ -81,11 +81,13 @@
         #middleSearchArea{
             height:100em;
             padding:10px;
+            overflow: auto;
         }
 
         #recentSearch{
             height:100em;
-            padding:10px;
+            padding-right:10px;
+            overflow: auto;
         }
 
         .maxheight{
@@ -356,8 +358,6 @@
             </div>
         </div>
 
-
-        </div>
     </main>
 </div>
 
