@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4cfa66fd-8346-4717-89a1-06578149846f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../webappsearch/web/database.db" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../webappsearch/web/database.lg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../webappsearch/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../webappsearch/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../webappsearch/spider_result.txt" afterPath="$PROJECT_DIR$/../webappsearch/spider_result.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../webappsearch/src/Pack/Crawl.java" afterPath="$PROJECT_DIR$/../webappsearch/src/Pack/Crawl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../webappsearch/src/Pack/Extract_db.java" afterPath="$PROJECT_DIR$/../webappsearch/src/Pack/Extract_db.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../webappsearch/src/Pack/SearchTool.java" afterPath="$PROJECT_DIR$/../webappsearch/src/Pack/SearchTool.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../webappsearch/src/Pack/Spider.java" afterPath="$PROJECT_DIR$/../webappsearch/src/Pack/Spider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../webappsearch/web/searchResult.jsp" afterPath="$PROJECT_DIR$/../webappsearch/web/searchResult.jsp" />
-    </list>
+    <list default="true" id="4cfa66fd-8346-4717-89a1-06578149846f" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/../webappsearch/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -1044,7 +1034,7 @@
       <workItem from="1493652645783" duration="132000" />
       <workItem from="1493654669887" duration="153000" />
       <workItem from="1494222181187" duration="774000" />
-      <workItem from="1494233420865" duration="18804000" />
+      <workItem from="1494233420865" duration="18862000" />
     </task>
     <task id="LOCAL-00001" summary="fix parent child link and keyword not shown">
       <created>1493538279007</created>
@@ -1116,15 +1106,21 @@
       <option name="project" value="LOCAL" />
       <updated>1493652724776</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="fix result keyword bug">
+      <created>1494257231981</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1494257231981</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="105372000" />
+    <option name="totallyTimeSpent" value="105430000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1146,9 +1142,9 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33515283" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33515283" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959402" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3286026" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19497864" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1211,7 +1207,8 @@
     <MESSAGE value="add search history" />
     <MESSAGE value="fix layout" />
     <MESSAGE value="fix a little bug,&#10;add 'query' cookie for current query" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix a little bug,&#10;add 'query' cookie for current query" />
+    <MESSAGE value="fix result keyword bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix result keyword bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
