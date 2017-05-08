@@ -149,8 +149,39 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <script>
+    <script type = "text/javascript">
+        function changeImage()
+        {
+            var img = document.getElementById("img");
+            img.src = images[x];
+            x++;
 
+            if(x >= images.length){
+                x = 0;
+            }
+
+            fadeImg(img, 100, true);
+            setTimeout("changeImage()", 3000);
+        }
+
+        function fadeImg(el, val, fade){
+            if(fade === true){
+                val--;
+            }else{
+                val ++;
+            }
+
+            if(val > 0 && val < 10){
+                el.style.opacity = val / 10;
+                setTimeout(function(){fadeImg(el, val, fade);}, 1);
+            }
+        }
+
+        var images = [], x = 0;
+        images[0] = "https://img.memesuper.com/13095a8d102f4de7c070839cd1df1714_-internet-memes-rage-faces-internet-memes-rage-faces_363-303.jpeg";
+        images[1] = "https://s-media-cache-ak0.pinimg.com/originals/06/43/a5/0643a59f778585b037daab022080df35.jpg";
+        images[2] = "https://s-media-cache-ak0.pinimg.com/originals/6c/22/43/6c2243b6c0582eee5c43ff4101359ede.png";
+        setTimeout("changeImage()", 3000);
     </script>
 
 
@@ -166,7 +197,7 @@
     </script>
 </head>
 
-<body>
+<body onload = "startTimer()">
 
 <header id="header">
     <div class="innertube">
@@ -345,7 +376,12 @@
             </div>
 
             <div class="col-sm-3">
-                <div id="recentSearch">
+                <div class="row">
+                    <center><p style="background-color: black; color: white ">Advertisement</p></center>
+                    <img id="img" height="200" />
+                </div>
+                <div class="row">
+                    <div id="recentSearch">
                     <h3>Recent Search</h3>
                     <ul class="list-group">
                     <%
@@ -358,6 +394,7 @@
                         }
                     %>
                     </ul>
+                </div>
                 </div>
             </div>
         </div>

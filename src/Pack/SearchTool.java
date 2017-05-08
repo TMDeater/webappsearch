@@ -5,9 +5,7 @@ import jdbm.RecordManager;
 import jdbm.RecordManagerFactory;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.ServletContext;
 import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -298,8 +296,9 @@ public class SearchTool {
                 double weightVal = Double.parseDouble(splittedIDAndWeight[1]);
                 String docIDString = splittedIDAndWeight[0];
                 if(!map.containsKey(docIDString)){
-                    double weightSquare = weightVal * weightVal;
+
                     double weight = weightVal;
+                    double weightSquare = weight * weight;
                     map.put(docIDString, weight);
                     mapForCalSquare.put(docIDString, weightSquare);
                 }else{
@@ -347,7 +346,28 @@ public class SearchTool {
         int idx = PageIdxr.getIdxNumber(Pageinfm.getUrl(index));
 
         //keywords
-        WordsAndWordFreqForPage(idx, pageResult);
+        String WordList = ForwardIdx.getValue(String.valueOf(idx));
+        //temp is docID to keywords
+
+        String[] ArrayWordFreqPair = WordList.split(" ");
+        for(int i1 = 0; i1 < ArrayWordFreqPair.length; i1++){
+            Word a = new Word();
+            String[] wordFreqPair = ArrayWordFreqPair[i1].split(":");
+            a.setText(wordFreqPair[0]);
+            a.setFreq(Integer.parseInt(wordFreqPair[1]));
+            pageResult.addKeyword(a);
+//            String docIDAndFreqArray = invertedIdx.getValue(WordIdxr.getIdx(arrayOfKeywords[i1]));
+//            String[] docIDAndFreqPair = docIDAndFreqArray.split(" ");
+//            for(int j = 0 ; j < docIDAndFreqPair.length;j++){
+//                String[] docIDAndFreq = docIDAndFreqPair[j].split(":");
+//                if(String.valueOf(idx).compareTo(docIDAndFreq[0])==0){
+//                    a.setFreq(Integer.parseInt(docIDAndFreq[1]));
+//                    pageResult.addKeyword(a);
+//                    break;
+//                }
+//            }
+        }
+        pageResult.sortKeyword();
 
         //child Links
         String child = ParChild.getValue(index);
@@ -367,24 +387,4 @@ public class SearchTool {
         return pageResult;
     }
 
-    private static void WordsAndWordFreqForPage(int index, Webpage pageResult) throws IOException {
-        String WordList = ForwardIdx.getValue(String.valueOf(index));
-        //temp is docID to keywords
-        String[] arrayOfKeywords = WordList.split(" ");
-        for(int i = 0; i < arrayOfKeywords.length;i++){
-            Word a = new Word();
-            a.setText(arrayOfKeywords[i]);
-            String docIDAndFreqArray = invertedIdx.getValue(WordIdxr.getIdx(arrayOfKeywords[i]));
-            String[] docIDAndFreqPair = docIDAndFreqArray.split(" ");
-            for(int j = 0 ; j < docIDAndFreqPair.length;j++){
-                String[] docIDAndFreq = docIDAndFreqPair[j].split(":");
-                if(String.valueOf(index).compareTo(docIDAndFreq[0])==0){
-                    a.setFreq(Integer.parseInt(docIDAndFreq[1]));
-                    pageResult.addKeyword(a);
-                    break;
-                }
-            }
-        }
-        pageResult.sortKeyword();
-    }
 }

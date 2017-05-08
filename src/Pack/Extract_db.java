@@ -58,16 +58,45 @@ public class Extract_db {
 		termWeight = new InvertedIndex(recman, "termW");
 
 		Vector<String> keywords = new Vector<String>();
-		keywords.add("Dinosaur");
+		keywords.add("movie");
 		//keywords.add("Planet");
 		//keywords.add("(2003)");
 		//keywords.add("swim");
 		//keywords.add("news");
 		SearchTool se = new SearchTool();
 		Vector<Webpage> result = se.search(keywords);
-		for(int i = 0; i < result.size(); i++){
-			generatePageInfm(result.elementAt(i).getURL());
+		for (int i=0;i<result.size();i++){
+			Webpage temp = result.elementAt(i);
+			Vector<Word> wordVector = temp.getKeyword();
+			for(int j = 0; j < wordVector.size(); j++) {
+				String word = wordVector.elementAt(j).getText();
+				System.out.println(word + " " + wordVector.elementAt(j).getFreq());
+			}
 		}
+//		for(int i = 0; i < result.size(); i++){
+//			generatePageInfm(result.elementAt(i).getURL());
+//		}
+
+		String stemmed=stopStem.stem("movie");
+		String wordIdx=WordIndexer.getIdx(stemmed);
+		System.out.println(wordIdx);
+		String getting = termWeight.getValue(wordIdx);
+		System.out.println(getting);
+		String[] split = getting.split(" ");
+		String max;
+		String maxDoc = null;
+		Double tempw = 0.0;
+		for (int i=0;i<split.length;i++){
+			String[] temp=split[i].split(":");
+			if (tempw<Double.parseDouble(temp[1])) {
+				tempw = Double.parseDouble(temp[1]);
+				maxDoc = new String(temp[0]);
+			}
+		}
+		System.out.println(maxDoc + ":" + String.valueOf(tempw));
+		System.out.println(Pageppt.getTitle(maxDoc));
+		System.out.println(maxTermFreq.getIdx(maxDoc));
+
 		
 //		int printedpage=0;
 //		int i=0;
@@ -95,6 +124,7 @@ public class Extract_db {
 	
 	public static void generatePageInfm(String url) throws IOException{
 		int index = PageIndexer.getIdxNumber(url);
+
         //title
 		printAndLog(Pageppt.getTitle(Integer.toString(index)), Pageppt.getTitle(Integer.toString(index)) + "\n");
 		//url
@@ -115,6 +145,7 @@ public class Extract_db {
 			String[] temp2 = inverted.getValue(WordIndexer.getIdx(temp[i])).split(" ");
             splitColonAndPrintFreq(index, temp2);
         }
+
 
 		write.append("\n");
 		

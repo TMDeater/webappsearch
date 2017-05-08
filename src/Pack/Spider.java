@@ -60,6 +60,7 @@ public class Spider {
 
 			System.out.println("load in webpage...");
 			fetchPages("https://course.cse.ust.hk/comp4321/labs/TestPages/testpage.htm");
+			//fetchPages("https://course.cse.ust.hk/comp4321/labs/TestPages/Movie/51.html");
 			while(!TodoList.isEmpty() && numOfPage < MAX){
 				if(DoneList.contains(TodoList.firstElement())){
 					TodoList.removeElementAt(0);
@@ -117,8 +118,9 @@ public class Spider {
 		while ((invertedIndexKey = (String) iterator.next()) != null) {
             //documentFrequency is the number of document contain the word_t
 			int documentFrequency = wordInverted.numOfElement(invertedIndexKey);
+			//wordid=>[docid1:12 docid2:14 docid3:10]
             for(int i = 0; i < documentFrequency ; i++){
-                //temp[0] is the word
+                //temp[0] is the document
                 //temp[1] is the termfrequency
                 //get the max term frequency from the getIndexNumber(word)
                 String[] temp = wordInverted.getElement(invertedIndexKey, i).split(":");
@@ -212,12 +214,15 @@ public class Spider {
 		Hashtable<Integer, Integer> map = new Hashtable<Integer,Integer>(); 
 		for(int i = 0; i < words.size(); i++){
 			if (!stopStem.isStopWord(words.get(i))){
-				String temp = stopStem.stem(words.get(i));
-				int index = WordIndexer.addEntry(temp, Integer.toString(WordIndexer.getLastIdx()));
-				//Inverted-file
-				addFreqOrNew(map, index);
-				//forward
-				wordForward.addEntry2(pgidx+"", temp);
+				String tempWord = words.get(i);
+				if (!(stopStem.stem(tempWord).equals(""))) {
+
+					String temp = stopStem.stem(words.get(i));
+					int index = WordIndexer.addEntry(temp, Integer.toString(WordIndexer.getLastIdx()));
+					//Inverted-file
+					addFreqOrNew(map, index);
+
+				}
 			}
 		}
 
@@ -308,19 +313,27 @@ public class Spider {
         	String wordIndex = Integer.toString(iwordIndex);
             titleInverted.addEntry2(wordIndex, Integer.toString(pgidx));
             //titleInverted.printAll();
-            System.out.println("add "+titleWords.get(i)+" for "+pgidx);
+            //System.out.println("add "+titleWords.get(i)+" for "+pgidx);
         }
     }
 
     public static int findMaxFreq(int pgidx, Hashtable<Integer, Integer> map, Iterator<Integer> itr) throws IOException {
 		int max = 0;
+		String maxW = null;
 		while (itr.hasNext()) {
           int idx = itr.next();
           int num = map.get(idx);
+			//forward
+		  wordForward.addEntry2(String.valueOf(pgidx) + "", WordIndexer.getValue(String.valueOf(idx))+":"+String.valueOf(num));
           wordInverted.addEntry(idx+"", pgidx, num);
-          if (num>max)	max=num;
+          if (num>max){
+          	max=num;
+          	maxW = WordIndexer.getValue(String.valueOf(idx));
+		  }
           else 			; //do nothing
         }
+        //System.out.println(wordForward.getValue(String.valueOf(pgidx)));
+        System.out.println("max word: "+maxW);
 		return max;
 	}
 
